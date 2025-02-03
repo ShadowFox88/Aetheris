@@ -1,0 +1,39 @@
+services:
+  postgres:
+    container_name: "aetheris-db"
+    image: postgres:17-alpine
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=Aetheris
+      - POSTGRES_PASSWORD=Aetheris
+      - POSTGRES_DB=Aetheris
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U Aetheris"]
+      interval: 2s
+      timeout: 1s
+      retries: 5
+
+  api:
+    container_name: "aetheris"
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8000:8000
+    env_file:
+      - .env
+    depends_on:
+      postgres:
+        condition: service_healthy
+    develop:
+      watch:
+        - action: sync+restart
+          path: .
+          target: /app/.
+          ignore:
+            - .git
+
+volumes:
+  pg_data:

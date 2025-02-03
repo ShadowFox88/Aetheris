@@ -1,0 +1,12 @@
+__pycache__/
+.venv/
+*.py[cod]
+
+.pdm-python
+static/
+configs/**/*
+*.log*
+**/[!__]_*.py
+.ruff_cache/
+compose.override.yaml
+.env

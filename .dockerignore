@@ -1,0 +1,17 @@
+__pycache__/
+*.py[cod]
+.venv/
+
+.git/
+.gitignore
+.gitmodules
+.github/
+.vscode/
+
+_pyright/
+**/*.ipynb
+docker-compose.yaml
+compose.override.yaml
+Dockerfile
+LICENSE
+README.md
