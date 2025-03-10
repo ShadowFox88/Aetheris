@@ -10,3 +10,4 @@ configs/**/*
 .ruff_cache/
 compose.override.yaml
 .env
+values.yaml
