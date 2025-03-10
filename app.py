@@ -1,9 +1,10 @@
+import secrets
 from collections.abc import AsyncGenerator
 from contextlib import asynccontextmanager
 from typing import Any, Literal
 
 from litestar import Litestar, get
-from litestar.datastructures import State
+from litestar.datastructures import ResponseHeader, State
 from litestar.exceptions import HTTPException
 from litestar.middleware.base import DefineMiddleware
 from litestar.status_codes import HTTP_409_CONFLICT
@@ -83,6 +84,9 @@ def create_app() -> Litestar:
             "snowflake_generator": provide_snowflake_generator,
             "transaction": provide_transaction,
         },
+        response_headers=[
+            ResponseHeader(name="X-ID", value=secrets.token_hex(8)),
+        ]
     )
 
 
