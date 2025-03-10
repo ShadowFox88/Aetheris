@@ -50,11 +50,14 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: aetheris-db
+  name: db
 spec:
-  ports:
-    - port: 5432
   selector:
-    app: aetheris-db
+    app: db
+  ports:
+    - protocol: TCP
+      port: {{ .Values.db.servicePort }}
+      targetPort: {{ .Values.db.servicePort }}
+  clusterIP: None  # StatefulSet requires a headless service
 
 
