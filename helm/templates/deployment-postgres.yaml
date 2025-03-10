@@ -4,7 +4,7 @@ metadata:
   name: db
 spec:
   serviceName: db
-  replicas: {{ .Values.db.replicaCount }}
+  replicas: {{ .Values.postgres.replicaCount }}
   selector:
     matchLabels:
       app: db
@@ -15,9 +15,9 @@ spec:
     spec:
       containers:
         - name: db
-          image: "{{ .Values.db.image.repository }}:{{ .Values.db.image.tag }}"
+          image: "{{ .Values.postgres.image.repository }}:{{ .Values.postgres.image.tag }}"
           ports:
-            - containerPort: {{ .Values.db.servicePort }}
+            - containerPort: {{ .Values.postgres.servicePort }}
           volumeMounts:
             - name: data
               mountPath: /var/lib/postgresql/data
@@ -44,7 +44,7 @@ spec:
           - ReadWriteOnce
         resources:
           requests:
-            storage: {{ .Values.db.storageSize }}
+            storage: {{ .Values.postgres.storageSize }}
 
 ---
 apiVersion: v1
@@ -56,8 +56,8 @@ spec:
     app: db
   ports:
     - protocol: TCP
-      port: {{ .Values.db.servicePort }}
-      targetPort: {{ .Values.db.servicePort }}
+      port: {{ .Values.postgres.servicePort }}
+      targetPort: {{ .Values.postgres.servicePort }}
   clusterIP: None  # StatefulSet requires a headless service
 
 
