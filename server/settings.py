@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import os
+import secrets
 
 from litestar.openapi import OpenAPIConfig
 from litestar.openapi.plugins import (
@@ -19,6 +20,8 @@ CONTACT_EMAIL: str | None = os.getenv("CONTACT_EMAIL")
 CONTACT_URL: str | None = os.getenv("CONTACT_URL")
 
 PUBLIC_REGISTRATION: bool = os.getenv("PUBLIC_REGISTRATION") in ("True", "true", "1")
+
+INSTANCE_ID: str = secrets.token_hex(8)
 
 OPENAPI_CONFIG: OpenAPIConfig = OpenAPIConfig(
     path="docs",

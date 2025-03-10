@@ -1,4 +1,3 @@
-import secrets
 from collections.abc import AsyncGenerator
 from contextlib import asynccontextmanager
 from typing import Any, Literal
@@ -9,7 +8,7 @@ from litestar.exceptions import HTTPException
 from litestar.middleware.base import DefineMiddleware
 from litestar.status_codes import HTTP_409_CONFLICT
 from server.auth.middleware import TokenAuthMiddleware
-from server.settings import DEBUG, OPENAPI_CONFIG
+from server.settings import DEBUG, INSTANCE_ID, OPENAPI_CONFIG
 from server.v1 import v1_router
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
@@ -85,7 +84,7 @@ def create_app() -> Litestar:
             "transaction": provide_transaction,
         },
         response_headers=[
-            ResponseHeader(name="X-ID", value=secrets.token_hex(8)),
+            ResponseHeader(name="X-ID", value=INSTANCE_ID),
         ]
     )
 
