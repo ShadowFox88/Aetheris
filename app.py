@@ -22,12 +22,14 @@ async def welcome() -> Literal["Welcome to Aetheris, an Image Sharing API!"]:
     """
     return "Welcome to Aetheris, an Image Sharing API!"
 
+
 @get("/ping", exclude_from_auth=True)
 async def ping() -> None:
     """
     Return a 200 OK response to indicate the server is running.
     """
     return
+
 
 middleware = [DefineMiddleware(TokenAuthMiddleware, exclude="docs")]
 
