@@ -30,6 +30,13 @@ async def ping() -> None:
     """
     return
 
+@get("/id", exclude_from_auth=True)
+async def instance_id() -> str:
+    """
+    Return the instance ID.
+    """
+    return INSTANCE_ID
+
 
 middleware = [DefineMiddleware(TokenAuthMiddleware, exclude="docs")]
 
