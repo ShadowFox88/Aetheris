@@ -40,7 +40,7 @@ async def db_connection(app: Litestar) -> AsyncGenerator[None, None]:
     engine: Any | None = getattr(app.state, "engine", None)
     if engine is None:
         engine = create_async_engine(
-            "postgresql+asyncpg://Aetheris:Aetheris@aetheris-db:5432/Aetheris"
+            "postgresql+asyncpg://Aetheris:Aetheris@db:5432/Aetheris"
         )
         app.state.engine = engine
 

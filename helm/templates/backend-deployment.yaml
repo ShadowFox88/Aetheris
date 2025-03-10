@@ -23,10 +23,5 @@ spec:
           image: "{{ .Values.registry }}/{{ .Values.api.image.repository }}:{{ .Values.api.image.tag }}"
           imagePullPolicy: "Always"
           ports:
-            - containerPort: {{ .Values.api.servicePort }}
-          env:
-            - name: DATABASE_URL
-              value: "{{ .Values.databaseURL }}"
-            - name: SIGNING_SECRET
-              value: "{{ .Values.api.signingSecret }}"
+            - containerPort: {{ .Values.api.service.port }}
       restartPolicy: Always
