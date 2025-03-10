@@ -28,4 +28,4 @@ api:
 
 NodePort:
   enabled: true
-  port: 30006
+  port: 30008
