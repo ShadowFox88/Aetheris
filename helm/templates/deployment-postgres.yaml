@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: aetheris-db
+spec:
+  serviceName: "aetheris-db"
+  replicas: {{ .Values.postgres.replicaCount }}
+  selector:
+    matchLabels:
+      app: aetheris-db
+  template:
+    metadata:
+      labels:
+        app: aetheris-db
+    spec:
+      containers:
+        - name: aetheris-db
+          image: {{ .Values.postgres.image }}
+          env:
+            - name: POSTGRES_USER
+              value: {{ .Values.postgres.user }}
+            - name: POSTGRES_PASSWORD
+              value: {{ .Values.postgres.password }}
+            - name: POSTGRES_DB
+              value: {{ .Values.postgres.db }}
+          volumeMounts:
+            - name: pg-data
+              mountPath: /var/lib/postgresql/data
+          livenessProbe:
+            exec:
+              command:
+                - pg_isready
+                - -U
+                - {{ .Values.postgres.user }}
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          resources:
+            {{- toYaml .Values.postgres.resources | nindent 12 }}
+      volumes:
+        - name: pg-data
+          persistentVolumeClaim:
+            claimName: pg-data-claim
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: aetheris-db
+spec:
+  ports:
+    - port: 5432
+  selector:
+    app: aetheris-db

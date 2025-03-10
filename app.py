@@ -1,6 +1,6 @@
 from collections.abc import AsyncGenerator
 from contextlib import asynccontextmanager
-from typing import Literal
+from typing import Any, Literal
 
 from litestar import Litestar, get
 from litestar.datastructures import State
@@ -22,6 +22,12 @@ async def welcome() -> Literal["Welcome to Aetheris, an Image Sharing API!"]:
     """
     return "Welcome to Aetheris, an Image Sharing API!"
 
+@get("/ping", exclude_from_auth=True)
+async def ping() -> None:
+    """
+    Return a 200 OK response to indicate the server is running.
+    """
+    return
 
 middleware = [DefineMiddleware(TokenAuthMiddleware, exclude="docs")]
 
@@ -31,7 +37,7 @@ async def db_connection(app: Litestar) -> AsyncGenerator[None, None]:
     """
     Lifespan handler to create and dispose of the database connection.
     """
-    engine = getattr(app.state, "engine", None)
+    engine: Any | None = getattr(app.state, "engine", None)
     if engine is None:
         engine = create_async_engine(
             "postgresql+asyncpg://Aetheris:Aetheris@aetheris-db:5432/Aetheris"

@@ -1,0 +1,20 @@
+postgres:
+  image: postgres:17-alpine
+  user: Aetheris
+  password: Aetheris
+  db: Aetheris
+  replicaCount: 1  # Number of replicas for Postgres
+  resources: {}
+
+aetherisApi:
+  image: 
+    buildContext: .
+    dockerfile: Dockerfile
+  replicaCount: 2  # Number of replicas for Aetheris API
+  service:
+    port: 8000
+  environment: 
+    POSTGRES_USER: Aetheris
+    POSTGRES_PASSWORD: Aetheris
+    POSTGRES_DB: Aetheris
+  resources: {}
