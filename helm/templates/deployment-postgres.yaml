@@ -1,30 +1,25 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: aetheris-db
+  name: db
 spec:
-  serviceName: "aetheris-db"
-  replicas: {{ .Values.postgres.replicaCount }}
+  serviceName: db
+  replicas: {{ .Values.db.replicaCount }}
   selector:
     matchLabels:
-      app: aetheris-db
+      app: db
   template:
     metadata:
       labels:
-        app: aetheris-db
+        app: db
     spec:
       containers:
-        - name: aetheris-db
-          image: {{ .Values.postgres.image }}
-          env:
-            - name: POSTGRES_USER
-              value: {{ .Values.postgres.user }}
-            - name: POSTGRES_PASSWORD
-              value: {{ .Values.postgres.password }}
-            - name: POSTGRES_DB
-              value: {{ .Values.postgres.db }}
+        - name: db
+          image: "{{ .Values.db.image.repository }}:{{ .Values.db.image.tag }}"
+          ports:
+            - containerPort: {{ .Values.db.servicePort }}
           volumeMounts:
-            - name: pg-data
+            - name: data
               mountPath: /var/lib/postgresql/data
           livenessProbe:
             exec:
@@ -34,12 +29,22 @@ spec:
                 - {{ .Values.postgres.user }}
             initialDelaySeconds: 5
             periodSeconds: 5
-          resources:
-            {{- toYaml .Values.postgres.resources | nindent 12 }}
-      volumes:
-        - name: pg-data
-          persistentVolumeClaim:
-            claimName: pg-data-claim
+          env:
+            - name: POSTGRES_USER
+              value: {{ .Values.postgres.user }}
+            - name: POSTGRES_PASSWORD
+              value: {{ .Values.postgres.password }}
+            - name: POSTGRES_DB
+              value: {{ .Values.postgres.db }}
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: {{ .Values.db.storageSize }}
 
 ---
 apiVersion: v1
@@ -51,3 +56,5 @@ spec:
     - port: 5432
   selector:
     app: aetheris-db
+
+

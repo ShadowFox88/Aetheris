@@ -1,15 +1,22 @@
+registry: registry.vahin.dev
+imagePullSecrets:
+  - name: registry-secret
+
 postgres:
-  image: postgres:17-alpine
+  image: 
+    repository: postgres
+    tag: 17-alpine
   user: Aetheris
   password: Aetheris
   db: Aetheris
   replicaCount: 1  # Number of replicas for Postgres
-  resources: {}
+  servicePort: 5432
+  storageSize: 50Gi
 
-aetherisApi:
-  image: 
-    buildContext: .
-    dockerfile: Dockerfile
+api:
+  image:
+    repository: vahin/aetheris
+    tag: latest
   replicaCount: 2  # Number of replicas for Aetheris API
   service:
     port: 8000
@@ -18,3 +25,7 @@ aetherisApi:
     POSTGRES_PASSWORD: Aetheris
     POSTGRES_DB: Aetheris
   resources: {}
+
+NodePort:
+  enabled: true
+  port: 30006
