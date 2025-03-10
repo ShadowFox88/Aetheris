@@ -7,8 +7,8 @@ spec:
     app: api
   ports:
     - protocol: TCP
-      port: 80
-      targetPort: {{ .Values.api.servicePort }}
+      port: {{ .Values.api.service.port }}
+      targetPort: {{ .Values.api.service.port }}
       {{- if .Values.NodePort.enabled }}
       nodePort: {{ .Values.NodePort.port }}
       {{- end }}
