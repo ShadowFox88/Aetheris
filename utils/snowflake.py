@@ -1,8 +1,8 @@
 import datetime
+import os
 import pathlib
 import secrets
 import socket
-import os
 
 EPOCH: datetime.datetime = datetime.datetime(
     year=2008,

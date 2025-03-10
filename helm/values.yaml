@@ -16,7 +16,7 @@ postgres:
 api:
   image:
     repository: vahin/aetheris
-    tag: latest
+    tag: 3fdcac0
   replicaCount: 2  # Number of replicas for Aetheris API
   service:
     port: 8000
