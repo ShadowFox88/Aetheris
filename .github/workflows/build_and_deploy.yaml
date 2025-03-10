@@ -51,14 +51,14 @@ jobs:
         id: meta
         uses: docker/metadata-action@master
         with:
-          images: ${{ secrets.REGISTRY }}/lamna/${{ env.IMAGE_NAME }}
+          images: ${{ secrets.REGISTRY }}/vahin/${{ env.REPO_NAME }}
 
       - name: Generate lowername image
         id: image-name
         run: |
           echo "IMAGE_NAME_LC=${IMAGE_NAME,,}" >> "${GITHUB_OUTPUT}"
         env:
-          IMAGE_NAME: '${{ env.IMAGE_NAME }}'
+          IMAGE_NAME: '${{ env.REPO_NAME }}'
 
       - name: Get short SHA
         id: slug
@@ -71,6 +71,6 @@ jobs:
           push: true
           tags: |
             ${{ steps.meta.outputs.tags }}
-            ${{ secrets.REGISTRY }}/aetheris/${{ steps.image-name.outputs.IMAGE_NAME_LC }}:${{ steps.slug.outputs.GIT_SHORT_SHA7 }}
-            ${{ secrets.REGISTRY }}/aetheris/${{ steps.image-name.outputs.IMAGE_NAME_LC }}:latest
+            ${{ secrets.REGISTRY }}/vahin/${{ steps.image-name.outputs.IMAGE_NAME_LC }}:${{ steps.slug.outputs.GIT_SHORT_SHA7 }}
+            ${{ secrets.REGISTRY }}/vahin/${{ steps.image-name.outputs.IMAGE_NAME_LC }}:latest
           labels: ${{ steps.meta.outputs.labels }}
