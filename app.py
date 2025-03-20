@@ -8,12 +8,14 @@ from litestar.datastructures import ResponseHeader, State
 from litestar.exceptions import HTTPException
 from litestar.middleware.base import DefineMiddleware
 from litestar.status_codes import HTTP_409_CONFLICT
+from litestar.types.protocols import Logger
 from server.auth.middleware import TokenAuthMiddleware
 from server.settings import (
     CONTACT_EMAIL,
     CONTACT_NAME,
     DEBUG,
     INSTANCE_ID,
+    LOGGING_CONFIG,
     OPENAPI_CONFIG,
     PUBLIC_REGISTRATION,
     VERSION,
@@ -23,7 +25,7 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 from utils.snowflake import SnowflakeGenerator
 
-logger: logging.Logger = logging.getLogger(__name__)
+logger: Logger = LOGGING_CONFIG.configure()()
 
 @get("/", exclude_from_auth=True)
 async def welcome() -> Literal["Welcome to Aetheris, an Image Sharing API!"]:
@@ -117,6 +119,7 @@ def create_app() -> Litestar:
         route_handlers=[welcome, v1_router()],
         debug=DEBUG,
         openapi_config=OPENAPI_CONFIG,
+        logging_config=LOGGING_CONFIG,
         middleware=middleware,
         lifespan=[db_connection],
         dependencies={

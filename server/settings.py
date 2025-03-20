@@ -3,6 +3,7 @@ from __future__ import annotations
 import os
 import secrets
 
+from litestar.logging import LoggingConfig
 from litestar.openapi import OpenAPIConfig
 from litestar.openapi.plugins import (
     JsonRenderPlugin,
@@ -58,4 +59,13 @@ OPENAPI_CONFIG: OpenAPIConfig = OpenAPIConfig(
         JsonRenderPlugin(),
     ],  # pyright: ignore[reportArgumentType] # i just like scalar
     enabled_endpoints={"openapi.yml", "openapi.json", "openapi.yaml"},
+)
+
+LOGGING_CONFIG = LoggingConfig(
+    logging_module="logging",
+    root={"level": "DEBUG" if DEBUG else "INFO", "handlers": ["queue_listener"]},
+    formatters={
+        "standard": {"format": "[%(asctime)s] [%(levelname)s] -> %(name)s: %(message)s"}
+    },
+    log_exceptions="always",
 )
