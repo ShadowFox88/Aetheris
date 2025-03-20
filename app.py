@@ -9,7 +9,15 @@ from litestar.exceptions import HTTPException
 from litestar.middleware.base import DefineMiddleware
 from litestar.status_codes import HTTP_409_CONFLICT
 from server.auth.middleware import TokenAuthMiddleware
-from server.settings import DEBUG, INSTANCE_ID, OPENAPI_CONFIG, CONTACT_EMAIL, CONTACT_NAME, PUBLIC_REGISTRATION, VERSION
+from server.settings import (
+    CONTACT_EMAIL,
+    CONTACT_NAME,
+    DEBUG,
+    INSTANCE_ID,
+    OPENAPI_CONFIG,
+    PUBLIC_REGISTRATION,
+    VERSION,
+)
 from server.v1 import v1_router
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
@@ -60,6 +68,29 @@ async def db_connection(app: Litestar) -> AsyncGenerator[None, None]:
     finally:
         await engine.dispose()
 
+async def startup() -> None:
+    """
+    Log some information about the app on startup.
+    """
+    logger.info("Creating the Litestar app.")
+    logger.info(f"""
+    Version: {VERSION}
+
+    Debug Mode: {"Enabled" if DEBUG else "Disabled"}
+    Public Registration: {"Enabled" if PUBLIC_REGISTRATION else "Disabled"}
+    Instance ID: {INSTANCE_ID}
+    Contact Name: {CONTACT_NAME}
+    Contact Email: {CONTACT_EMAIL}
+
+    """)  # noqa: G004
+
+    if DEBUG:
+        logging.debug("Debug Message.")
+        logging.info("Info Message.")
+        logging.warning("Warning Message.")
+        logging.error("Error Message.")
+        logging.critical("Critical Message.")
+
 
 def create_app() -> Litestar:
     """
@@ -92,22 +123,11 @@ def create_app() -> Litestar:
             "snowflake_generator": provide_snowflake_generator,
             "transaction": provide_transaction,
         },
+        on_startup=[startup],
         response_headers=[
             ResponseHeader(name="X-Instance-ID", value=INSTANCE_ID),
         ]
     )
 
-
-logger.log(logging.INFO, "Creating the Litestar app.")
-logger.log(logging.INFO, f"""
-Version: {VERSION}
-
-Debug Mode: {"Enabled" if DEBUG else "Disabled"}
-Public Registration: {"Enabled" if PUBLIC_REGISTRATION else "Disabled"}
-Instance ID: {INSTANCE_ID}
-Contact Name: {CONTACT_NAME}
-Contact Email: {CONTACT_EMAIL}
-
-""")  # noqa: G004
 
 app: Litestar = create_app()
