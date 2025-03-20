@@ -1,3 +1,4 @@
+import logging
 from collections.abc import AsyncGenerator
 from contextlib import asynccontextmanager
 from typing import Any, Literal
@@ -8,12 +9,13 @@ from litestar.exceptions import HTTPException
 from litestar.middleware.base import DefineMiddleware
 from litestar.status_codes import HTTP_409_CONFLICT
 from server.auth.middleware import TokenAuthMiddleware
-from server.settings import DEBUG, INSTANCE_ID, OPENAPI_CONFIG
+from server.settings import DEBUG, INSTANCE_ID, OPENAPI_CONFIG, CONTACT_EMAIL, CONTACT_NAME, PUBLIC_REGISTRATION, VERSION
 from server.v1 import v1_router
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 from utils.snowflake import SnowflakeGenerator
 
+logger: logging.Logger = logging.getLogger(__name__)
 
 @get("/", exclude_from_auth=True)
 async def welcome() -> Literal["Welcome to Aetheris, an Image Sharing API!"]:
@@ -95,5 +97,17 @@ def create_app() -> Litestar:
         ]
     )
 
+
+logger.log(logging.INFO, "Creating the Litestar app.")
+logger.log(logging.INFO, f"""
+Version: {VERSION}
+
+Debug Mode: {"Enabled" if DEBUG else "Disabled"}
+Public Registration: {"Enabled" if PUBLIC_REGISTRATION else "Disabled"}
+Instance ID: {INSTANCE_ID}
+Contact Name: {CONTACT_NAME}
+Contact Email: {CONTACT_EMAIL}
+
+""")  # noqa: G004
 
 app: Litestar = create_app()
