@@ -26,4 +26,9 @@ spec:
           imagePullPolicy: "Always"
           ports:
             - containerPort: {{ .Values.api.service.port }}
+                env:          
+          {{- range $key, $val := .Values.api.environment }}
+            - name: {{ $key }}
+              value: {{ $val | quote }}
+          {{- end }}
       restartPolicy: Always
