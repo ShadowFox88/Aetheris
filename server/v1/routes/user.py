@@ -30,4 +30,5 @@ async def register(
     return UserTypeReturn(username=new_user.username, id=new_user.id)
 
 
+
 user_router = Router(path="/user", route_handlers=[register])

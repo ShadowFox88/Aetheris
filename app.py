@@ -91,7 +91,7 @@ def create_app() -> Litestar:
             "transaction": provide_transaction,
         },
         response_headers=[
-            ResponseHeader(name="X-ID", value=INSTANCE_ID),
+            ResponseHeader(name="X-Instance-ID", value=INSTANCE_ID),
         ]
     )
 
