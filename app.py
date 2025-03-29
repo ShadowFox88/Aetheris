@@ -7,6 +7,7 @@ from litestar import Litestar, get
 from litestar.datastructures import ResponseHeader, State
 from litestar.exceptions import HTTPException
 from litestar.middleware.base import DefineMiddleware
+from litestar.plugins.sqlalchemy import SQLAlchemySerializationPlugin
 from litestar.status_codes import HTTP_409_CONFLICT
 from litestar.types.protocols import Logger
 from server.auth.middleware import TokenAuthMiddleware
@@ -27,6 +28,7 @@ from utils.snowflake import SnowflakeGenerator
 
 logger: Logger = LOGGING_CONFIG.configure()()
 
+
 @get("/", exclude_from_auth=True)
 async def welcome() -> Literal["Welcome to Aetheris, an Image Sharing API!"]:
     """
@@ -41,6 +43,7 @@ async def ping() -> None:
     Return a 200 OK response to indicate the server is running.
     """
     return
+
 
 @get("/id", exclude_from_auth=True)
 async def instance_id() -> str:
@@ -69,6 +72,7 @@ async def db_connection(app: Litestar) -> AsyncGenerator[None, None]:
         yield
     finally:
         await engine.dispose()
+
 
 async def startup() -> None:
     """
@@ -129,7 +133,8 @@ def create_app() -> Litestar:
         on_startup=[startup],
         response_headers=[
             ResponseHeader(name="X-Instance-ID", value=INSTANCE_ID),
-        ]
+        ],
+        plugins=[SQLAlchemySerializationPlugin()],
     )
 
 

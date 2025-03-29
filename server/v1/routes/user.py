@@ -6,12 +6,15 @@ from schema.return_models import UserTypeInput, UserTypeReturn
 from server.settings import (
     PUBLIC_REGISTRATION,
 )
+from sqlalchemy.ext.asyncio import AsyncSession
 from utils.snowflake import SnowflakeGenerator
 
 
 @post("/register", exclude_from_auth=True)
 async def register(
-    data: UserTypeInput, snowflake_generator: SnowflakeGenerator
+    data: UserTypeInput,
+    snowflake_generator: SnowflakeGenerator,
+    transaction: AsyncSession,
 ) -> UserTypeReturn:
     """
     Register a new user.
@@ -26,9 +29,9 @@ async def register(
         password=data.password,
         id=snowflake_generator.generate(),
     )
+    transaction.add(new_user)
 
     return UserTypeReturn(username=new_user.username, id=new_user.id)
-
 
 
 user_router = Router(path="/user", route_handlers=[register])

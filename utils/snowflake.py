@@ -30,13 +30,17 @@ def is_docker() -> bool:
         path.is_file() and any("docker" in line for line in path.open())
     )
 
+
 def is_kubernetes() -> bool:
     """
     Check if a function is running in a kubernetes container.
     """
-    path = pathlib.Path("/var/run/secrets/kubernetes.io") # https://stackoverflow.com/a/49045575
+    path = pathlib.Path(
+        "/var/run/secrets/kubernetes.io"
+    )  # https://stackoverflow.com/a/49045575
 
     return path.exists() or os.getenv("KUBERNETES_SERVICE_HOST") is not None
+
 
 class SnowflakeGenerator:
     """

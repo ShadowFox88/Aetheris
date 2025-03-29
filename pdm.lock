@@ -5,10 +5,44 @@
 groups = ["default"]
 strategy = ["inherit_metadata"]
 lock_version = "4.5.0"
-content_hash = "sha256:646c97d76bb7d13120414189bd1426f10e1e2eef685eb9f7830a7cd4b7318b7b"
+content_hash = "sha256:c8f53860c4bb799809cccd78d657e0fcdffb122e4817268a8787df567513eb6b"
 
 [[metadata.targets]]
 requires_python = "==3.12.*"
+
+[[package]]
+name = "advanced-alchemy"
+version = "1.0.1"
+requires_python = ">=3.9"
+summary = "Ready-to-go SQLAlchemy concoctions."
+groups = ["default"]
+dependencies = [
+    "alembic>=1.12.0",
+    "eval-type-backport; python_full_version < \"3.10\"",
+    "greenlet",
+    "sqlalchemy>=2.0.20",
+    "typing-extensions>=4.0.0",
+]
+files = [
+    {file = "advanced_alchemy-1.0.1-py3-none-any.whl", hash = "sha256:964deac3e46ff12cc4b5c4337d5b0f9494c6a5726732de31c0acb070e11acfd0"},
+    {file = "advanced_alchemy-1.0.1.tar.gz", hash = "sha256:8c700f5597cc3d7207a75495fe0adac96f8654d6339be2d8c39e6029da2da898"},
+]
+
+[[package]]
+name = "alembic"
+version = "1.15.1"
+requires_python = ">=3.9"
+summary = "A database migration tool for SQLAlchemy."
+groups = ["default"]
+dependencies = [
+    "Mako",
+    "SQLAlchemy>=1.4.0",
+    "typing-extensions>=4.12",
+]
+files = [
+    {file = "alembic-1.15.1-py3-none-any.whl", hash = "sha256:197de710da4b3e91cf66a826a5b31b5d59a127ab41bd0fc42863e2902ce2bbbe"},
+    {file = "alembic-1.15.1.tar.gz", hash = "sha256:e1a1c738577bca1f27e68728c910cd389b9a92152ff91d902da649c192e30c49"},
+]
 
 [[package]]
 name = "anyio"
@@ -313,6 +347,20 @@ dependencies = [
 files = [
     {file = "litestar-2.14.0-py3-none-any.whl", hash = "sha256:5602065e263e453ee742aafe38681ba4aa9f5e3df21326cfd2082d1a766ca4fb"},
     {file = "litestar-2.14.0.tar.gz", hash = "sha256:ac154e46fb74ec4bbce7660f6f437adb7d413ea9bad52cd7954dc1d25e243716"},
+]
+
+[[package]]
+name = "mako"
+version = "1.3.9"
+requires_python = ">=3.8"
+summary = "A super-fast templating language that borrows the best ideas from the existing templating languages."
+groups = ["default"]
+dependencies = [
+    "MarkupSafe>=0.9.2",
+]
+files = [
+    {file = "Mako-1.3.9-py3-none-any.whl", hash = "sha256:95920acccb578427a9aa38e37a186b1e43156c87260d7ba18ca63aa4c7cbd3a1"},
+    {file = "mako-1.3.9.tar.gz", hash = "sha256:b5d65ff3462870feec922dbccf38f6efb44e5714d7b593a656be86663d8600ac"},
 ]
 
 [[package]]
