@@ -59,5 +59,5 @@ class File(Base):
     date_expires: Mapped[datetime.datetime | None] = mapped_column(server_default=None)
     password: Mapped[str | None] = mapped_column(server_default=None)
 
-    owner: Mapped[int] = mapped_column(ForeignKey("users.id"))
+    owner: Mapped[int] = mapped_column(ForeignKey("Users.id"))
     note: Mapped[str | None] = mapped_column(server_default=None)
