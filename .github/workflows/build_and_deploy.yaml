@@ -16,7 +16,6 @@ on:
       - master
 
 concurrency:
-  cancel-in-progress: true
   group: ci-${{ github.ref }}
 
 env:

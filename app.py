@@ -10,6 +10,7 @@ from litestar.middleware.base import DefineMiddleware
 from litestar.plugins.sqlalchemy import SQLAlchemySerializationPlugin
 from litestar.status_codes import HTTP_409_CONFLICT
 from litestar.types.protocols import Logger
+from schema.models import Base
 from server.auth.middleware import TokenAuthMiddleware
 from server.settings import (
     CONTACT_EMAIL,
@@ -55,7 +56,6 @@ async def instance_id() -> str:
 
 middleware = [DefineMiddleware(TokenAuthMiddleware, exclude="docs")]
 
-
 @asynccontextmanager
 async def db_connection(app: Litestar) -> AsyncGenerator[None, None]:
     """
@@ -67,6 +67,9 @@ async def db_connection(app: Litestar) -> AsyncGenerator[None, None]:
             "postgresql+asyncpg://Aetheris:Aetheris@db:5432/Aetheris"
         )
         app.state.engine = engine
+
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
 
     try:
         yield
