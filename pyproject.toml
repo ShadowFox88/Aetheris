@@ -5,7 +5,7 @@ description = "Default template for PDM package"
 authors = [
     {name = "Vahin Mehra", email = "vahin@vahin.dev"},
 ]
-dependencies = ["litestar[standard]>=2.14.0", "sqlalchemy[asyncio]>=2.0.37", "asyncpg>=0.30.0", "advanced-alchemy>=1.0.1"]
+dependencies = ["litestar[sqlalchemy,standard]>=2.15.1", "sqlalchemy[asyncio]>=2.0.37", "asyncpg>=0.30.0"]
 requires-python = "==3.12.*"
 readme = "README.md"
 license = {text = "GNU AGPLv3"}
