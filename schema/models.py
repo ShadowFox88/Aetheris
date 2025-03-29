@@ -5,6 +5,7 @@ import datetime  # noqa: TC003 # we need this for mapped
 from sqlalchemy import ForeignKey, text
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 from sqlalchemy.sql import func
+from sqlalchemy.types import BigInteger
 
 
 class Base(DeclarativeBase):
@@ -34,7 +35,7 @@ class User(Base):
 
     __tablename__ = "Users"
 
-    id: Mapped[int] = mapped_column(primary_key=True)
+    id: Mapped[int] = mapped_column(BigInteger, primary_key=True)
 
     username: Mapped[str] = mapped_column(unique=True)
     password: Mapped[str] = mapped_column()
